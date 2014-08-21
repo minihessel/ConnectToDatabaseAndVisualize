@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -10,14 +11,14 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataselector.FXMLDocumentController">
+<VBox prefHeight="685.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataselector.FXMLDocumentController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar prefHeight="11.0" prefWidth="954.0" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
                   <MenuItem fx:id="menuItem_kobleOpp" mnemonicParsing="false" onAction="#handleButtonAction4" onMenuValidation="#handleButtonAction4" text="Koble opp mot database" />
-            <MenuItem fx:id="menuItem1" mnemonicParsing="false" onAction="#handleButtonAction" onMenuValidation="#handleButtonAction" text="GetData" />
+            <MenuItem fx:id="menuItem1" mnemonicParsing="false" onAction="#handleButtonAction" onMenuValidation="#handleButtonAction" text="Kun for test_database" />
             <MenuItem fx:id="menuItem2" mnemonicParsing="false" onAction="#handleButtonAction1" text="SortData" />
             <Menu mnemonicParsing="false" text="Open Recent" />
             <SeparatorMenuItem mnemonicParsing="false" />
@@ -86,17 +87,26 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <PieChart fx:id="pieChart" layoutX="4.0" layoutY="136.0" prefHeight="400.0" prefWidth="423.0" visible="false" />
+                        <Group fx:id="group">
+                           <children>
+            <PieChart fx:id="pieChart" clockwise="false" prefHeight="577.0" prefWidth="661.0" />
+                              <Label fx:id="caption" blendMode="SRC_ATOP" layoutX="339.0" layoutY="580.0" prefHeight="31.0" prefWidth="205.0" textFill="#d00d52">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                           </children>
+                        </Group>
     </children>
             </AnchorPane>
           </content>
         </ScrollPane>
-        <AnchorPane fx:id="sqlConnectionPane" visible="false">
+        <AnchorPane fx:id="sqlConnectionPane">
           <children>
-            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Details" textAlignment="CENTER" textFill="$x2" wrapText="false" />
+            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="SQL tilkoblingsinfo" textAlignment="CENTER" textFill="$x2" wrapText="false" />
                   <Button layoutX="69.0" layoutY="497.0" mnemonicParsing="false" onAction="#handleButtonAction5" text="Koble opp" />
                   <TextField fx:id="txtIPadress" layoutX="8.0" layoutY="74.0" promptText="IP adresse" />
-                  <TextField fx:id="txtPort" layoutX="8.0" layoutY="113.0" promptText="Port" />
+                  <TextField fx:id="txtPortNumber" layoutX="8.0" layoutY="113.0" promptText="Port" />
+                  <TextField fx:id="txtSQLinstance" layoutX="8.0" layoutY="150.0" promptText="SQL instanse" />
           </children>
         </AnchorPane>
       </items>

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import snaq.db.DBPoolDataSource;
 
 /**
  *
@@ -35,23 +36,38 @@ public class SQL_manager {
         System.out.println(dataen);
     }
 
-    protected void connectToSql(String myUrl,String myPort) throws SQLException {
-        dataen.clear();
-        System.out.print("Kobler til");
-        try {
+    protected void connectToSql(String mySqlAdress, Integer myPort,String sqlInstance) throws SQLException{
        
-            Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
-            String SQL = "SELECT asd,val FROM test";
+      
+    dataen.clear();
+        System.out.print("Kobler til");
+      
+        try {
+            //String myDriver = "org.gjt.mm.mysql.Driver";
+            
+            String myUrl = "jdbc:mysql://"+mySqlAdress+":"+myPort + "/" + sqlInstance;
+            Class.forName("com.mysql.jdbc.Driver");
+            System.out.println(myUrl
+              + "user=root&password=1234");
+            DriverManager.setLoginTimeout(2);
+            //Connection conn = DriverManager.getConnection(myUrl, "root", "1234");
+            Connection conn = DriverManager.getConnection(myUrl+"?"
+              + "user=root&password=1234");
+            DriverManager.setLoginTimeout(2);
+             String SQL = "SELECT asd,val FROM test";
             ResultSet rs = conn.createStatement().executeQuery(SQL);
-            while (rs.next()) {
+               while (rs.next()) {
                 /* Kjører metoden for å binde data til dataList(datasettet) */
                 System.out.println("faen");
                 bindSQLdata("asd", rs);
+
             }
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+        } 
+      catch (Exception e)
+{
+  System.err.println("Got an exception! ");
+  System.err.println(e.getMessage());
+}
     }
     
 }

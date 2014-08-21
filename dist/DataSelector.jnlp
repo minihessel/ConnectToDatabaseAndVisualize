@@ -11,9 +11,10 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="DataSelector.jar" size="11632" download="eager" />
-    <jar href="lib/easybind-1.0.2.jar" size="49016" download="eager" />
-    <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="860408" download="eager" />
+    <jar href="DataSelector.jar" size="18713" download="eager" />
+    <jar href="lib/dbpool-6.0.jar" size="117545" download="eager" />
+    <jar href="lib/easybind-1.0.2.jar" size="49015" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="860406" download="eager" />
   </resources>
 <security>
   <all-permissions/>
