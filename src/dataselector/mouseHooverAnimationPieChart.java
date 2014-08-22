@@ -1,51 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package dataselector;
 
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
 import javafx.animation.TranslateTransitionBuilder;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 /**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * Kode lånt fra http://tomsondev.bestsolution.at/2012/11/21/animating-the-javafx-piechart-a-bit/ 
+*
  */
 public abstract class mouseHooverAnimationPieChart implements Initializable {
-       static class MouseHoverAnimation implements EventHandler<MouseEvent> {
+
+    static class MouseHoverAnimation implements EventHandler<MouseEvent> {
 
         static final Duration ANIMATION_DURATION = new Duration(500);
         static final double ANIMATION_DISTANCE = 0.15;
         private double cos;
-        private double sin;
-        private PieChart chart;
+        private double sin; 
+       private PieChart chart;
 
         public MouseHoverAnimation(PieChart.Data d, PieChart chart) {
             this.chart = chart;

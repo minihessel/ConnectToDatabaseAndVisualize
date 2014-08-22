@@ -19,18 +19,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 /**
  *
@@ -58,14 +61,19 @@ public class FXMLDocumentController implements Initializable {
     protected TableColumn Value;
     @FXML
     protected PieChart pieChart;
-    @FXML
-    protected AnchorPane sqlConnectionPane;
+
     @FXML
     protected TextField txtIPadress;
     @FXML
     protected TextField txtPortNumber;
     @FXML
     protected TextField txtSQLinstance;
+    @FXML
+    protected Group visualizationGroup;
+    @FXML
+    protected Group dataSelectGroup;
+    @FXML
+    protected Group sqlConnectGroup;
 
     @FXML
     protected void handleButtonAction(ActionEvent event) throws ClassNotFoundException, SQLException {
@@ -75,14 +83,25 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    protected void handleButtonAction4(ActionEvent event) throws ClassNotFoundException {
-        sqlConnectionPane.setVisible(true);
+    protected void btnSQlConnect(ActionEvent event) throws ClassNotFoundException, SQLException {
+        visualizationGroup.visibleProperty().set(false);
+        dataSelectGroup.visibleProperty().set(false);
+        sqlConnectGroup.visibleProperty().set(true);
+
+    }
+
+    @FXML
+    protected void btnDataSelect(ActionEvent event) throws ClassNotFoundException, SQLException {
+        visualizationGroup.visibleProperty().set(false);
+        dataSelectGroup.visibleProperty().set(true);
+        sqlConnectGroup.visibleProperty().set(false);
+
     }
 
     @FXML
     protected void handleButtonAction5(ActionEvent event) throws SQLException, ClassNotFoundException {
         sql_manager.connectToSql(txtIPadress.getText(), Integer.parseInt(txtPortNumber.getText()), txtSQLinstance.getText());
-        sqlConnectionPane.setVisible(false);
+
     }
 
     @FXML
@@ -92,6 +111,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     protected void handleButtonAction2(ActionEvent event) throws SQLException, ClassNotFoundException {
+        visualizationGroup.visibleProperty().set(true);
+        dataSelectGroup.visibleProperty().set(false);
+        sqlConnectGroup.visibleProperty().set(false);
+
         barChart.visibleProperty().set(false);
         pieChart.visibleProperty().set(true);
         getPieChartData();
@@ -99,6 +122,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     protected void handleButtonAction3(ActionEvent event) throws SQLException, ClassNotFoundException {
+        visualizationGroup.visibleProperty().set(true);
+        dataSelectGroup.visibleProperty().set(false);
+        sqlConnectGroup.visibleProperty().set(false);
+
         barChart.visibleProperty().set(true);
         pieChart.visibleProperty().set(false);
         getBarChartData();
@@ -122,6 +149,7 @@ public class FXMLDocumentController implements Initializable {
         });
         menu.getItems().add(item);
         tableView.setContextMenu(menu);
+
     }
 
     protected void getPieChartData() {

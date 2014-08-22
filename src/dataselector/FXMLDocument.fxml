@@ -17,13 +17,11 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-                  <MenuItem fx:id="menuItem_kobleOpp" mnemonicParsing="false" onAction="#handleButtonAction4" onMenuValidation="#handleButtonAction4" text="Koble opp mot database" />
+                  <MenuItem fx:id="menuItem_kobleOpp" mnemonicParsing="false" text="Koble opp mot database" />
             <MenuItem fx:id="menuItem1" mnemonicParsing="false" onAction="#handleButtonAction" onMenuValidation="#handleButtonAction" text="Kun for test_database" />
             <MenuItem fx:id="menuItem2" mnemonicParsing="false" onAction="#handleButtonAction1" text="SortData" />
             <Menu mnemonicParsing="false" text="Open Recent" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#handleButtonAction3" text="BarChart" />
-            <MenuItem fx:id="menuItem4" mnemonicParsing="false" onAction="#handleButtonAction2" text="PieChart" />
             <MenuItem mnemonicParsing="false" text="Save As…" />
             <MenuItem mnemonicParsing="false" text="Revert" />
             <SeparatorMenuItem mnemonicParsing="false" />
@@ -53,44 +51,72 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.2505567928730512, 0.7505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+  <AnchorPane prefHeight="37.0" prefWidth="1340.0">
+    <children>
+      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="The Data Visualizer" textAlignment="CENTER" wrapText="false">
+        <font>
+          <Font size="18.0" fx:id="x1" />
+        </font>
+        <textFill>
+          <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
+        </textFill>
+      </Label>
+            <Button fx:id="btnSQlConnect" layoutX="322.0" layoutY="6.0" mnemonicParsing="false" onAction="#btnSQlConnect" text="Conncet to DB" />
+            <Button fx:id="btnDataSelect" layoutX="220.0" layoutY="6.0" mnemonicParsing="false" onAction="#btnDataSelect" text="DataSelect" />
+            <MenuButton layoutX="448.0" layoutY="6.0" mnemonicParsing="false" text="MenuButton">
+              <items>
+                <MenuItem fx:id="handleButtonAction2" mnemonicParsing="false" onAction="#handleButtonAction2" text="PieChart" />
+                <MenuItem fx:id="handleButtonAction3" mnemonicParsing="false" onAction="#handleButtonAction3" text="BarChart" />
+              </items>
+            </MenuButton>
+<TextField fx:id="filterField" alignment="CENTER_RIGHT" layoutX="700.0" layoutY="8.0" onAction="#handleButtonAction1" promptText="Filter" />
+    </children>
+  </AnchorPane>
+    <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-        <AnchorPane>
-          <children>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Master" textAlignment="CENTER" wrapText="false">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-              <textFill>
-                <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
-              </textFill>
-            </Label>
-<TableView fx:id="tableView" layoutX="16.0" layoutY="14.0" prefHeight="468.0" prefWidth="201.0">
-  <columns>
-    <TableColumn fx:id="Month" prefWidth="75.0" text="Navn" />
-    <TableColumn fx:id="Value" prefWidth="75.0" text="Verdi" />
-  </columns>
-</TableView>
-          </children>
-        </AnchorPane>
-        <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+        <ScrollPane prefHeight="611.0" prefWidth="1338.0">
           <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0">
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="1346.0">
                <children>
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <TextField fx:id="filterField" layoutX="233.0" layoutY="35.0" />
-      <BarChart fx:id="barChart" layoutY="194.0" prefHeight="350.0" prefWidth="430.0" visible="false">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
-                        <Group fx:id="group">
+                        <Group fx:id="dataSelectGroup" layoutX="73.0" layoutY="7.0" visible="false">
                            <children>
-            <PieChart fx:id="pieChart" clockwise="false" prefHeight="577.0" prefWidth="661.0" />
-                              <Label fx:id="caption" blendMode="SRC_ATOP" layoutX="339.0" layoutY="580.0" prefHeight="31.0" prefWidth="205.0" textFill="#d00d52">
+            <TableView fx:id="tableView" prefHeight="468.0" prefWidth="1212.0">
+              <columns>
+                <TableColumn fx:id="Month" prefWidth="75.0" text="Navn" />
+                <TableColumn fx:id="Value" prefWidth="75.0" text="Verdi" />
+              </columns>
+            </TableView>
+                           </children>
+                        </Group>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+                        <Group fx:id="sqlConnectGroup" layoutY="44.0">
+                           <children>
+                          <AnchorPane fx:id="sqlConnectionPane" layoutX="430.0" layoutY="18.0" prefHeight="512.0" prefWidth="898.0">
+                                 <children>
+                              <Label alignment="CENTER" font="$x1" layoutX="109.0" layoutY="113.0" style="&#10;" text="SQL tilkoblingsinfo" textAlignment="CENTER" textFill="$x2" wrapText="false" />
+                                    <Button layoutX="191.0" layoutY="261.0" mnemonicParsing="false" onAction="#handleButtonAction5" text="Koble opp" />
+                                    <TextField fx:id="txtIPadress" layoutX="105.0" layoutY="152.0" promptText="IP adresse" />
+                                    <TextField fx:id="txtPortNumber" layoutX="105.0" layoutY="185.0" promptText="Port" />
+                                    <TextField fx:id="txtSQLinstance" layoutX="105.0" layoutY="221.0" promptText="SQL instanse" />
+                                 </children>
+                          </AnchorPane>
+                           </children>
+                        </Group>
+                        <Group fx:id="visualizationGroup" layoutX="346.0" layoutY="-14.0" visible="false">
+                           <children>
+            <BarChart fx:id="barChart" prefHeight="587.0" prefWidth="667.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+            </BarChart>
+            <PieChart fx:id="pieChart" clockwise="false" layoutX="-51.0" layoutY="31.0" prefHeight="551.0" prefWidth="845.0" />
+                              <Label fx:id="caption" blendMode="SRC_ATOP" layoutX="582.0" layoutY="443.0" prefHeight="31.0" prefWidth="205.0" textFill="#d00d52">
                                  <font>
                                     <Font size="16.0" />
                                  </font></Label>
@@ -100,15 +126,6 @@
             </AnchorPane>
           </content>
         </ScrollPane>
-        <AnchorPane fx:id="sqlConnectionPane">
-          <children>
-            <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="SQL tilkoblingsinfo" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-                  <Button layoutX="69.0" layoutY="497.0" mnemonicParsing="false" onAction="#handleButtonAction5" text="Koble opp" />
-                  <TextField fx:id="txtIPadress" layoutX="8.0" layoutY="74.0" promptText="IP adresse" />
-                  <TextField fx:id="txtPortNumber" layoutX="8.0" layoutY="113.0" promptText="Port" />
-                  <TextField fx:id="txtSQLinstance" layoutX="8.0" layoutY="150.0" promptText="SQL instanse" />
-          </children>
-        </AnchorPane>
       </items>
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
