@@ -36,14 +36,18 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
                 start += calcAngle(tmp);
 
             }
-
+          
             cos = Math.cos(Math.toRadians(0 - start - angle / 2));
             sin = Math.sin(Math.toRadians(0 - start - angle / 2));
         }
 
         @Override
         public void handle(MouseEvent arg0) {
+            
+            
             Node n = (Node) arg0.getSource();
+           
+          
 
             double minX = Double.MAX_VALUE;
             double maxX = Double.MAX_VALUE * -1;
@@ -74,7 +78,8 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
 
         @Override
         public void handle(MouseEvent event) {
-            TranslateTransitionBuilder.create().toX(0).toY(0).duration(new Duration(500)).node((Node) event.getSource()).build().play();
+           TranslateTransitionBuilder.create().toX(0).toY(0).duration(new Duration(500)).node((Node) event.getSource()).build().play();
+        
         }
     }
 }

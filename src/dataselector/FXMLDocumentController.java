@@ -5,6 +5,8 @@
  */
 package dataselector;
 
+import dataselector.mouseHooverAnimationPieChart.MouseExitAnimation;
+import dataselector.mouseHooverAnimationPieChart.MouseHoverAnimation;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -26,10 +28,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -37,7 +40,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
+import org.controlsfx.dialog.Dialogs;
 import org.fxmisc.easybind.EasyBind;
 
 /**
@@ -55,12 +60,17 @@ public class FXMLDocumentController implements Initializable {
     static XYChart.Series series1 = new XYChart.Series();
     static ObservableList<String> rows = FXCollections.observableArrayList();
 
+    int userChosenDataNameColumnIndex = 0;
+    int userChosenDataValueColumnIndex = 0;
+
     @FXML
     protected Label caption;
     @FXML
     protected TextField filterField;
     @FXML
     TableView tableView;
+    @FXML
+    LineChart lineChart;
     @FXML
     TextField t;
     @FXML
@@ -129,57 +139,87 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    protected void handleButtonAction2(ActionEvent event) throws SQLException, ClassNotFoundException {
+    protected void handleButtonPieChart(ActionEvent event) throws SQLException, ClassNotFoundException {
         visualizationGroup.visibleProperty().set(true);
         dataSelectGroup.visibleProperty().set(false);
         sqlConnectGroup.visibleProperty().set(false);
 
-        
         barChart.visibleProperty().set(false);
         pieChart.visibleProperty().set(true);
-   int userChosenDataNameColumnIndex = 0  ;
-int userChosenDataValueColumnIndex = 0 ;
-        Iterator itr =  lstClm.iterator();
-        int counter = 0; 
-        Boolean thereIsAValue = false; 
-        Boolean thereIsAName = false; 
-        while(itr.hasNext())
-        {
-          if (counter>1){
-              System.out.println("FEIL");
-          }
-          else{
-            if(isInteger(lstClm.get(counter).getCellData(0).toString()))
-                    {   thereIsAValue = true; 
-                        userChosenDataValueColumnIndex = Integer.parseInt(lstClm.get(counter).getId());
-                        
-                    }
-            else {
-                thereIsAName = true; 
-                userChosenDataNameColumnIndex = Integer.parseInt(lstClm.get(counter).getId());
-            }
-          }
-                    counter++;
-                       itr.next();
+        lineChart.visibleProperty().set(false);
+
+        if (checkWhichIndexOnUserSelectedColumns() == true) {
+            getPieChartData(userChosenDataValueColumnIndex, userChosenDataNameColumnIndex);
         }
-        if(thereIsAName && thereIsAValue == true )
-        {
-            getPieChartData(userChosenDataValueColumnIndex,userChosenDataNameColumnIndex);
-        }
-        
-     
-      
+
     }
 
     @FXML
-    protected void handleButtonAction3(ActionEvent event) throws SQLException, ClassNotFoundException {
+    protected void handeButtonBarChart(ActionEvent event) throws SQLException, ClassNotFoundException {
         visualizationGroup.visibleProperty().set(true);
         dataSelectGroup.visibleProperty().set(false);
         sqlConnectGroup.visibleProperty().set(false);
 
         barChart.visibleProperty().set(true);
         pieChart.visibleProperty().set(false);
-        getBarChartData();
+        lineChart.visibleProperty().set(false);
+        if (checkWhichIndexOnUserSelectedColumns() == true) {
+            getBarChartData(userChosenDataValueColumnIndex, userChosenDataNameColumnIndex);
+        }
+
+    }
+
+    @FXML
+    protected void handleButtonLineChart(ActionEvent event) throws SQLException, ClassNotFoundException {
+        visualizationGroup.visibleProperty().set(true);
+        dataSelectGroup.visibleProperty().set(false);
+        sqlConnectGroup.visibleProperty().set(false);
+
+        barChart.visibleProperty().set(false);
+        pieChart.visibleProperty().set(false);
+        lineChart.visibleProperty().set(true);
+        if (checkWhichIndexOnUserSelectedColumns() == true) {
+            getLineChartData(userChosenDataValueColumnIndex, userChosenDataNameColumnIndex);
+        }
+
+    }
+
+    private boolean checkWhichIndexOnUserSelectedColumns() throws NumberFormatException {
+
+        Iterator itr = lstClm.iterator();
+        int counter = 0;
+        Boolean thereIsAValue = false;
+        Boolean thereIsAName = false;
+        Boolean thereIsOnlyTwo = true;
+        while (itr.hasNext()) {
+            if (counter > 1) {
+                thereIsOnlyTwo = false;
+                System.out.println("FEIL");
+            } else {
+                if (lstClm.get(counter).getUserData() == "Value") {
+                    thereIsAValue = true;
+                    userChosenDataValueColumnIndex = Integer.parseInt(lstClm.get(counter).getId());
+
+                } else if ((lstClm.get(counter).getUserData() == "Name")) {
+                    thereIsAName = true;
+                    userChosenDataNameColumnIndex = Integer.parseInt(lstClm.get(counter).getId());
+                }
+            }
+            counter++;
+            itr.next();
+        }
+        if (thereIsAName == true && thereIsAValue== true && thereIsOnlyTwo == true) {
+            return true;
+        }
+        Dialogs.create()
+                .title("Feil i datavalg")
+                .message("Du har valgt en feil i tabellen. Det må kun velges ett felt med navn og ett med verdier")
+                .showInformation();
+                visualizationGroup.visibleProperty().set(false);
+        dataSelectGroup.visibleProperty().set(true);
+        sqlConnectGroup.visibleProperty().set(false);
+        
+        return false;
     }
 
     @Override
@@ -252,7 +292,7 @@ int userChosenDataValueColumnIndex = 0 ;
                     return new SimpleStringProperty(param.getValue().get(j).toString());
                 }
             });
-            
+
             col.setId((String.valueOf(i)));
             col.prefWidthProperty().bind(tableView.widthProperty().divide(4)); //for å automatisere bredden på kolonnene 
             //col.setGraphic(new CheckBox());
@@ -281,48 +321,32 @@ int userChosenDataValueColumnIndex = 0 ;
         tableView.setItems(dataen);
 
     }
-    
-    public static boolean isInteger(String str) {
-	if (str == null) {
-		return false;
-	}
-	int length = str.length();
-	if (length == 0) {
-		return false;
-	}
-	int i = 0;
-	if (str.charAt(0) == '-') {
-		if (length == 1) {
-			return false;
-		}
-		i = 1;
-	}
-	for (; i < length; i++) {
-		char c = str.charAt(i);
-		if (c <= '/' || c >= ':') {
-			return false;
-		}
-	}
-	return true;
-}
 
     private void addCheckBoxesToColumns(TableColumn col) {
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                CheckBox cb = (CheckBox) event.getSource();
+                ComboBox cb = (ComboBox) event.getSource();
                 TableColumn column = (TableColumn) cb.getUserData();
-                if (cb.isSelected()) {
-                    System.out.println(column);
-                    lstClm.add(column);
-                } else {
+
+                if (cb.getValue() == " ") {
                     lstClm.remove(column);
+                } else {
+                       lstClm.remove(column);
+                    column.setUserData(cb.getValue().toString());
+                    System.out.println("kanskje her? " + column.getUserData());
+                    System.out.println(column + " " + column.getId());
+
+                    lstClm.add(column);
                 }
 
             }
         };
-        CheckBox cb = new CheckBox();
+        ComboBox cb = new ComboBox();
+        cb.getItems().add("Name");
+        cb.getItems().add("Value");
+        cb.getItems().add(" ");
         cb.setUserData(col);
         cb.setOnAction(handler);
         col.setGraphic(cb);
@@ -330,40 +354,61 @@ int userChosenDataValueColumnIndex = 0 ;
     }
 
     protected void getPieChartData(Integer userChosenDataValueColumnIndex, Integer userChosenDataNameColumnIndex) {
-        
-        
-        
-           System.out.println("Kolonne id for data er " + userChosenDataValueColumnIndex + "Kolonne id for name er " +userChosenDataNameColumnIndex);
-        ObservableList<PieChart.Data> pieChartData
-                = EasyBind.map(dataen, rowData -> {
-            String name = (String) rowData.get(userChosenDataNameColumnIndex);
-            int value = Integer.parseInt(rowData.get(userChosenDataValueColumnIndex));
-            return new PieChart.Data(name, value);
-        });
-       System.out.println("aa " + pieChartData.get(0));
-       
-        /* pieChart.setData(pieChartData);
 
-         for (PieChart.Data d : pieChartData) {
-         d.getNode().setOnMouseEntered(new MouseHoverAnimation(d, pieChart));
-         d.getNode().setOnMouseExited(new MouseExitAnimation());
-         d.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-         @Override
-         public void handle(MouseEvent e) {
-         caption.setText("Verdi for valgt pai: " + String.valueOf(d.getPieValue()));
-         }
-         });
-         }*/
+        System.out.println("Kolonne id for data er " + userChosenDataValueColumnIndex + "Kolonne id for name er " + userChosenDataNameColumnIndex);
+        ObservableList<PieChart.Data> pieChartData
+                = FXCollections.observableArrayList(EasyBind.map(dataen, rowData -> {
+                    String name = (String) rowData.get(userChosenDataNameColumnIndex);
+                    int value = Integer.parseInt(rowData.get(userChosenDataValueColumnIndex));
+                    return new PieChart.Data(name, value);
+                }));
+        System.out.println("aa " + pieChartData.get(0));
+        pieChart.setData(pieChartData);
+
+        for (PieChart.Data d : pieChartData) {
+            d.getNode().setOnMouseEntered(new MouseHoverAnimation(d, pieChart));
+            d.getNode().setOnMouseExited(new MouseExitAnimation());
+            d.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    caption.setText("Verdi for valgt pai: " + String.valueOf(d.getPieValue()));
+                }
+            });
+        }
     }
 
-    protected void getBarChartData() {
-        Iterator itr = tableView.getItems().iterator();
+    protected void getBarChartData(Integer userChosenDataValueColumnIndex, Integer userChosenDataNameColumnIndex) {
 
-        series1.getData().clear();
+        ObservableList<XYChart.Data<String, Number>> barChartData = EasyBind.map(dataen, rowData -> {
+            String name = rowData.get(userChosenDataNameColumnIndex);
+            Double value = new Double(rowData.get(userChosenDataValueColumnIndex));
+            return new XYChart.Data(name, value);
+        });
 
-        series1.getData().add(new XYChart.Data(itr.next(), dataen.get(1)));
+        XYChart.Series series1 = new XYChart.Series();
+        series1.getData().addAll(barChartData);
+        barChart.getData().addAll(series1);
 
+        //series1.getData().clear();
+        // series1.getData().add(new XYChart.Data(itr.next(), dataen.get(1)));
         barChart.setData(FXCollections.observableArrayList(series1));
+    }
+
+    protected void getLineChartData(Integer userChosenDataValueColumnIndex, Integer userChosenDataNameColumnIndex) {
+
+        ObservableList<XYChart.Data<String, Number>> barChartData = EasyBind.map(dataen, rowData -> {
+            String name = rowData.get(userChosenDataNameColumnIndex);
+            Double value = new Double(rowData.get(userChosenDataValueColumnIndex));
+            return new XYChart.Data(name, value);
+        });
+
+        XYChart.Series series1 = new XYChart.Series();
+        series1.getData().addAll(barChartData);
+        lineChart.getData().addAll(series1);
+
+        //series1.getData().clear();
+        // series1.getData().add(new XYChart.Data(itr.next(), dataen.get(1)));
+        lineChart.setData(FXCollections.observableArrayList(series1));
     }
 
     /* private void filterData() {

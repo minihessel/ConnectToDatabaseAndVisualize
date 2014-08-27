@@ -65,8 +65,9 @@
             <Button fx:id="btnDataSelect" layoutX="220.0" layoutY="6.0" mnemonicParsing="false" onAction="#btnDataSelect" text="DataSelect" />
             <MenuButton layoutX="448.0" layoutY="6.0" mnemonicParsing="false" text="MenuButton">
               <items>
-                <MenuItem fx:id="handleButtonAction2" mnemonicParsing="false" onAction="#handleButtonAction2" text="PieChart" />
-                <MenuItem fx:id="handleButtonAction3" mnemonicParsing="false" onAction="#handleButtonAction3" text="BarChart" />
+                <MenuItem fx:id="handleButtonPieChart" mnemonicParsing="false" onAction="#handleButtonPieChart" text="PieChart" />
+                <MenuItem fx:id="handeButtonBarChart" mnemonicParsing="false" onAction="#handeButtonBarChart" text="BarChart" />
+                  <MenuItem fx:id="handleButtonLineChart" mnemonicParsing="false" onAction="#handleButtonLineChart" text="Line chart" />
               </items>
             </MenuButton>
 <TextField fx:id="filterField" alignment="CENTER_RIGHT" layoutX="700.0" layoutY="8.0" onAction="#handleButtonAction1" promptText="Filter" />
@@ -106,6 +107,14 @@
                         </Group>
                         <Group fx:id="visualizationGroup" layoutX="346.0" layoutY="-14.0" visible="false">
                            <children>
+                              <LineChart fx:id="lineChart">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
             <BarChart fx:id="barChart" prefHeight="587.0" prefWidth="667.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
