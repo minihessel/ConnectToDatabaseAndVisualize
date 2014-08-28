@@ -15,7 +15,7 @@ import javafx.util.Duration;
 public abstract class mouseHooverAnimationPieChart implements Initializable {
 
     static class MouseHoverAnimation implements EventHandler<MouseEvent> {
-
+          // TranslateTransitionBuilder.create().toX(0).toY(0).duration(new Duration(500)).node((Node) event.getSource()).build().play();
         static final Duration ANIMATION_DURATION = new Duration(500);
         static final double ANIMATION_DISTANCE = 0.15;
         private double cos;
@@ -23,6 +23,8 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
        private PieChart chart;
 
         public MouseHoverAnimation(PieChart.Data d, PieChart chart) {
+         
+            System.out.println("her kommern ut 1");
             this.chart = chart;
             double start = 0;
             double angle = calcAngle(d);
@@ -46,13 +48,22 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
             
             
             Node n = (Node) arg0.getSource();
-           
           
-
+            
+          if ("clicked".equals(n.getId())){
+              System.out.println("her må det skje - bang");
+               TranslateTransitionBuilder.create().toX(0).toY(0).duration(new Duration(500)).node(n).build().play();
+               n.setId(null);
+                  String styleString = " ";
+                n.setStyle(styleString);
+          }
+          else
+          {
             double minX = Double.MAX_VALUE;
             double maxX = Double.MAX_VALUE * -1;
 
             for (PieChart.Data d : chart.getData()) {
+                
 
                 minX = Math.min(minX, d.getNode().getBoundsInParent().getMinX());
                 maxX = Math.max(maxX, d.getNode().getBoundsInParent().getMaxX());
@@ -60,7 +71,13 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
             }
 
             double radius = maxX - minX;
+            
             TranslateTransitionBuilder.create().toX((radius * ANIMATION_DISTANCE) * cos).toY((radius * ANIMATION_DISTANCE) * sin).duration(ANIMATION_DURATION).node(n).build().play();
+         String styleString = "-fx-border-color: black; -fx-border-width: 3; -fx-border-style: dashed;";
+                n.setStyle(styleString);
+            n.setId("clicked");
+          }
+          
         }
 
         private static double calcAngle(PieChart.Data d) {
@@ -78,7 +95,10 @@ public abstract class mouseHooverAnimationPieChart implements Initializable {
 
         @Override
         public void handle(MouseEvent event) {
+                  
            TranslateTransitionBuilder.create().toX(0).toY(0).duration(new Duration(500)).node((Node) event.getSource()).build().play();
+             Node n = (Node) event.getSource();
+             n.setId(null);
         
         }
     }

@@ -27,7 +27,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.BubbleChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -71,6 +73,8 @@ public class FXMLDocumentController implements Initializable {
     TableView tableView;
     @FXML
     LineChart lineChart;
+    @FXML
+    AreaChart bubbleChart;
     @FXML
     TextField t;
     @FXML
@@ -153,6 +157,23 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+       @FXML
+    protected void handleButtonBubbleChart(ActionEvent event) throws SQLException, ClassNotFoundException {
+        visualizationGroup.visibleProperty().set(true);
+        dataSelectGroup.visibleProperty().set(false);
+        sqlConnectGroup.visibleProperty().set(false);
+
+        barChart.visibleProperty().set(false);
+        pieChart.visibleProperty().set(false);
+        lineChart.visibleProperty().set(false);
+        bubbleChart.visibleProperty().set(true);
+
+        if (checkWhichIndexOnUserSelectedColumns() == true) {
+            getBubbleChart(userChosenDataValueColumnIndex, userChosenDataNameColumnIndex);
+        }
+
+    }
+    
 
     @FXML
     protected void handeButtonBarChart(ActionEvent event) throws SQLException, ClassNotFoundException {
@@ -366,7 +387,7 @@ public class FXMLDocumentController implements Initializable {
         pieChart.setData(pieChartData);
 
         for (PieChart.Data d : pieChartData) {
-            d.getNode().setOnMouseEntered(new MouseHoverAnimation(d, pieChart));
+            d.getNode().setOnMouseClicked(new MouseHoverAnimation(d, pieChart));
             d.getNode().setOnMouseExited(new MouseExitAnimation());
             d.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
@@ -392,6 +413,25 @@ public class FXMLDocumentController implements Initializable {
         //series1.getData().clear();
         // series1.getData().add(new XYChart.Data(itr.next(), dataen.get(1)));
         barChart.setData(FXCollections.observableArrayList(series1));
+    }
+    
+     protected void getBubbleChart(Integer userChosenDataValueColumnIndex, Integer userChosenDataNameColumnIndex) {
+            //in the making. Bubblechart må ha to int verdier, ikke en name og en value.
+        ObservableList<XYChart.Data<String, Number>> bubbleChartData = EasyBind.map(dataen, rowData -> {
+              Double name = new Double(rowData.get(1));
+            Double value = new Double(rowData.get(4));
+            return new XYChart.Data(name, value);
+        });
+
+        XYChart.Series series1 = new XYChart.Series();
+        series1.getData().addAll(bubbleChartData);
+       bubbleChart.getData().addAll(series1);
+
+        //series1.getData().clear();
+        // series1.getData().add(new XYChart.Data(itr.next(), dataen.get(1)));
+       bubbleChart.setData(FXCollections.observableArrayList(series1));
+     
+               
     }
 
     protected void getLineChartData(Integer userChosenDataValueColumnIndex, Integer userChosenDataNameColumnIndex) {

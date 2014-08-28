@@ -68,6 +68,7 @@
                 <MenuItem fx:id="handleButtonPieChart" mnemonicParsing="false" onAction="#handleButtonPieChart" text="PieChart" />
                 <MenuItem fx:id="handeButtonBarChart" mnemonicParsing="false" onAction="#handeButtonBarChart" text="BarChart" />
                   <MenuItem fx:id="handleButtonLineChart" mnemonicParsing="false" onAction="#handleButtonLineChart" text="Line chart" />
+                  <MenuItem fx:id="handleButtonBubbleChart" mnemonicParsing="false" onAction="#handleButtonBubbleChart" text="Bubble chart" />
               </items>
             </MenuButton>
 <TextField fx:id="filterField" alignment="CENTER_RIGHT" layoutX="700.0" layoutY="8.0" onAction="#handleButtonAction1" promptText="Filter" />
@@ -115,7 +116,15 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </LineChart>
-            <BarChart fx:id="barChart" prefHeight="587.0" prefWidth="667.0">
+                              <AreaChart fx:id="areaChart" visible="false">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </AreaChart>
+            <BarChart fx:id="barChart" prefHeight="587.0" prefWidth="667.0" visible="false">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
