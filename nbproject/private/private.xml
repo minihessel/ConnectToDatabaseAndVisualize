@@ -5,22 +5,14 @@
             <url>src/dataselector/FXMLDocumentController.java</url>
             <bookmark id="1">
                 <name/>
-                <line>169</line>
+                <line>177</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/FXMLDocumentController.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/SQL_manager.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/DataSelector.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/Record.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/AbstractEditableTableCell.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/NumberTextField.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/mouseHooverAnimationPieChart.java</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/FXMLDocument.fxml</file>
-            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/LoadDriver.java</file>
+            <file>file:/Users/Eskil/NetBeansProjects/DataSelector/src/dataselector/Controller/FXMLDocumentController.java</file>
         </group>
     </open-files>
 </project-private>
